@@ -36,6 +36,7 @@ func CreateSetting() *Setting {
 				log.Println("Check set to", value)
 			}),
 		}
+		SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked)
 	}
 
 	return SettingUI

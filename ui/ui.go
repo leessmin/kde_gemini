@@ -15,7 +15,7 @@ func Run() {
 	geminiApp := app.New()
 	geminiApp.Settings().SetTheme(&theme.ZhTheme{})
 	// 主窗口
-	mainWindow := geminiApp.NewWindow("你好Fyne")
+	mainWindow := geminiApp.NewWindow("gemini")
 
 	confirmBtn := widget.NewButton("确认", func() {
 		log.Println("确认按钮被点击")

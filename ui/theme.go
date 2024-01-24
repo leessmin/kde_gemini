@@ -121,10 +121,22 @@ func CreateThemeItem(
 	selectValue []string,
 	selectLightFunc func(string),
 	selectDarkFunc func(string)) *ThemeItem {
+
+	lightSelect := widget.NewSelect(selectValue, selectLightFunc)
+	darkSelect := widget.NewSelect(selectValue, selectDarkFunc)
+	checkEnable := widget.NewCheck(name, func(b bool) {
+		judgeSelectEnable(b, lightSelect)
+		judgeSelectEnable(b, darkSelect)
+		checkFunc(b)
+	})
+
+	judgeSelectEnable(checkEnable.Checked, lightSelect)
+	judgeSelectEnable(checkEnable.Checked, darkSelect)
+
 	return &ThemeItem{
-		CheckEnable: widget.NewCheck(name, checkFunc),
-		LightSelect: widget.NewSelect(selectValue, selectLightFunc),
-		DarkSelect:  widget.NewSelect(selectValue, selectDarkFunc),
+		CheckEnable: checkEnable,
+		LightSelect: lightSelect,
+		DarkSelect:  darkSelect,
 	}
 }
 
@@ -144,4 +156,13 @@ func (t *ThemeItem) CreateContainer() *fyne.Container {
 	}
 
 	return t.Container
+}
+
+// judgeEnable 判断组件是否启用
+func judgeSelectEnable(b bool, widget *widget.Select) {
+	if b {
+		widget.Enable()
+	} else {
+		widget.Disable()
+	}
 }
