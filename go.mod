@@ -1,4 +1,4 @@
-module gemini
+module kde_gemini
 
 go 1.21.6
 

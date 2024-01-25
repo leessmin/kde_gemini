@@ -1,6 +1,6 @@
 package main
 
-import "gemini/ui"
+import "kde_gemini/ui"
 
 func main() {
 	ui.Run()

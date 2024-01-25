@@ -1,7 +1,7 @@
 package ui
 
 import (
-	"gemini/theme"
+	"kde_gemini/theme"
 	"log"
 
 	"fyne.io/fyne/v2"
