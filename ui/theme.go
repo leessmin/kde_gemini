@@ -12,6 +12,8 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var ThemeUI *Theme
+
 // 主题 ui 结构体
 type Theme struct {
 	// 主题下容器列表
@@ -22,27 +24,28 @@ type Theme struct {
 
 // CreateTheme 创建主题对象
 func CreateTheme() *Theme {
-	return &Theme{}
-}
-
-// CreateContainer 创建主题容器
-func (t *Theme) CreateContainer() *fyne.Container {
-	if t.Container == nil {
-		t.initItem()
-		t.initOption()
+	if ThemeUI == nil {
+		ThemeUI = &Theme{}
+		ThemeUI.initItem()
+		ThemeUI.initOption()
 
 		sc := container.NewVScroll(container.NewVBox(
-			t.ThemeItemList[GlobalTheme].CreateContainer(),
-			t.ThemeItemList[ColorTheme].CreateContainer(),
-			t.ThemeItemList[KonsoleTheme].CreateContainer(),
+			ThemeUI.ThemeItemList[GlobalTheme].CreateContainer(),
+			ThemeUI.ThemeItemList[ColorTheme].CreateContainer(),
+			ThemeUI.ThemeItemList[KonsoleTheme].CreateContainer(),
 		))
 
 		// 填充
 		expander := canvas.NewRectangle(&color.RGBA{})
 		expander.SetMinSize(fyne.NewSize(0, 500))
 
-		t.Container = container.NewBorder(nil, nil, expander, nil, sc)
+		ThemeUI.Container = container.NewBorder(nil, nil, expander, nil, sc)
 	}
+	return ThemeUI
+}
+
+// CreateContainer 创建主题容器
+func (t *Theme) CreateContainer() *fyne.Container {
 	return t.Container
 }
 
