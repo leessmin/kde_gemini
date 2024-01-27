@@ -2,6 +2,7 @@ package ui
 
 import (
 	"image/color"
+	"kde_gemini/plugins"
 	"log"
 
 	"fyne.io/fyne/v2"
@@ -14,7 +15,7 @@ import (
 // 主题 ui 结构体
 type Theme struct {
 	// 主题下容器列表
-	ThemeItemList map[string]*ThemeItem
+	ThemeItemList map[ThemeEnum]*ThemeItem
 	// 容器
 	Container *fyne.Container
 }
@@ -28,12 +29,12 @@ func CreateTheme() *Theme {
 func (t *Theme) CreateContainer() *fyne.Container {
 	if t.Container == nil {
 		t.initItem()
+		t.initOption()
 
 		sc := container.NewVScroll(container.NewVBox(
-			t.ThemeItemList["全局主题"].CreateContainer(),
-			t.ThemeItemList["颜色"].CreateContainer(),
-			t.ThemeItemList["GTK"].CreateContainer(),
-			t.ThemeItemList["Konsole"].CreateContainer(),
+			t.ThemeItemList[GlobalTheme].CreateContainer(),
+			t.ThemeItemList[ColorTheme].CreateContainer(),
+			t.ThemeItemList[KonsoleTheme].CreateContainer(),
 		))
 
 		// 填充
@@ -47,13 +48,13 @@ func (t *Theme) CreateContainer() *fyne.Container {
 
 // initItem 初始化选项
 func (t *Theme) initItem() {
-	t.ThemeItemList = make(map[string]*ThemeItem)
-	t.ThemeItemList["全局主题"] = CreateThemeItem(
+	t.ThemeItemList = make(map[ThemeEnum]*ThemeItem)
+	t.ThemeItemList[GlobalTheme] = CreateThemeItem(
 		"全局主题",
 		func(b bool) {
 			log.Println("全局主题,check", b)
 		},
-		[]string{"选项1", "选项2"},
+		[]string{},
 		func(s string) {
 			log.Println("light", s)
 		},
@@ -61,12 +62,12 @@ func (t *Theme) initItem() {
 			log.Println("dark", s)
 		},
 	)
-	t.ThemeItemList["颜色"] = CreateThemeItem(
+	t.ThemeItemList[ColorTheme] = CreateThemeItem(
 		"颜色",
 		func(b bool) {
 			log.Println("颜色,check", b)
 		},
-		[]string{"选项1", "选项2"},
+		[]string{},
 		func(s string) {
 			log.Println("light", s)
 		},
@@ -74,25 +75,12 @@ func (t *Theme) initItem() {
 			log.Println("dark", s)
 		},
 	)
-	t.ThemeItemList["GTK"] = CreateThemeItem(
-		"GTK",
-		func(b bool) {
-			log.Println("GTK,check", b)
-		},
-		[]string{"选项1", "选项2"},
-		func(s string) {
-			log.Println("light", s)
-		},
-		func(s string) {
-			log.Println("dark", s)
-		},
-	)
-	t.ThemeItemList["Konsole"] = CreateThemeItem(
+	t.ThemeItemList[KonsoleTheme] = CreateThemeItem(
 		"Konsole",
 		func(b bool) {
 			log.Println("Konsole,check", b)
 		},
-		[]string{"选项1", "选项2"},
+		[]string{},
 		func(s string) {
 			log.Println("light", s)
 		},
@@ -100,6 +88,16 @@ func (t *Theme) initItem() {
 			log.Println("dark", s)
 		},
 	)
+}
+
+// initOption 初始化 select选项
+func (t *Theme) initOption() {
+	t.ThemeItemList[GlobalTheme].LightSelect.SetOptions(plugins.NewGlobalThemePlugin().GetTheme())
+	t.ThemeItemList[GlobalTheme].DarkSelect.SetOptions(plugins.NewGlobalThemePlugin().GetTheme())
+	t.ThemeItemList[ColorTheme].LightSelect.SetOptions(plugins.NewColorThemePlugin().GetTheme())
+	t.ThemeItemList[ColorTheme].DarkSelect.SetOptions(plugins.NewColorThemePlugin().GetTheme())
+	t.ThemeItemList[KonsoleTheme].LightSelect.SetOptions(plugins.NewKonsoleThemePlugin().GetTheme())
+	t.ThemeItemList[KonsoleTheme].DarkSelect.SetOptions(plugins.NewKonsoleThemePlugin().GetTheme())
 }
 
 // 单个主题选项
