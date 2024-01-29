@@ -2,6 +2,7 @@ package ui
 
 import (
 	"image/color"
+	"kde_gemini/config"
 	"kde_gemini/plugins"
 	"log"
 
@@ -40,6 +41,8 @@ func CreateTheme() *Theme {
 		expander.SetMinSize(fyne.NewSize(0, 500))
 
 		ThemeUI.Container = container.NewBorder(nil, nil, expander, nil, sc)
+
+		ThemeUI.UpdateByConfig(config.GetConfig())
 	}
 	return ThemeUI
 }
@@ -52,7 +55,7 @@ func (t *Theme) CreateContainer() *fyne.Container {
 // initItem 初始化选项
 func (t *Theme) initItem() {
 	t.ThemeItemList = make(map[ThemeEnum]*ThemeItem)
-	t.ThemeItemList[GlobalTheme] = CreateThemeItem(
+	t.ThemeItemList[GlobalTheme] = createThemeItem(
 		"全局主题",
 		func(b bool) {
 			log.Println("全局主题,check", b)
@@ -65,7 +68,7 @@ func (t *Theme) initItem() {
 			log.Println("dark", s)
 		},
 	)
-	t.ThemeItemList[ColorTheme] = CreateThemeItem(
+	t.ThemeItemList[ColorTheme] = createThemeItem(
 		"颜色",
 		func(b bool) {
 			log.Println("颜色,check", b)
@@ -78,7 +81,7 @@ func (t *Theme) initItem() {
 			log.Println("dark", s)
 		},
 	)
-	t.ThemeItemList[KonsoleTheme] = CreateThemeItem(
+	t.ThemeItemList[KonsoleTheme] = createThemeItem(
 		"Konsole",
 		func(b bool) {
 			log.Println("Konsole,check", b)
@@ -116,7 +119,7 @@ type ThemeItem struct {
 }
 
 // CreateThemeItem 创建主题选项
-func CreateThemeItem(
+func createThemeItem(
 	name string,
 	checkFunc func(bool),
 	selectValue []string,
@@ -166,4 +169,20 @@ func judgeSelectEnable(b bool, widget *widget.Select) {
 	} else {
 		widget.Disable()
 	}
+}
+
+// UpdateByConfig 更新主题的配置
+func (t *Theme) UpdateByConfig(c *config.Config) {
+	t.updateItemByConfig(GlobalTheme, &c.GlobalTheme)
+	t.updateItemByConfig(ColorTheme, &c.ColorTheme)
+	t.updateItemByConfig(KonsoleTheme, &c.KonsoleTheme)
+}
+
+// updateItemByConfig 更新单个主题选项配置
+func (t *Theme) updateItemByConfig(te ThemeEnum, c *config.ThemeConfig) {
+	t.ThemeItemList[te].CheckEnable.SetChecked(c.Enable)
+	t.ThemeItemList[te].LightSelect.SetSelected(c.Light)
+	t.ThemeItemList[te].DarkSelect.SetSelected(c.Dark)
+	judgeSelectEnable(c.Enable, t.ThemeItemList[te].LightSelect)
+	judgeSelectEnable(c.Enable, t.ThemeItemList[te].DarkSelect)
 }

@@ -1,9 +1,9 @@
 package ui
 
 import (
-	"errors"
+	"kde_gemini/config"
+	"kde_gemini/util"
 	"log"
-	"regexp"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -37,27 +37,17 @@ func CreateSetting() *Setting {
 			}),
 		}
 		SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked)
+		SettingUI.UpdateByConfig(config.GetConfig())
 	}
 
 	return SettingUI
-}
-
-// validatorTime 验证时间是否合法
-func validatorTime(str string) error {
-	//^(?:[01]\d|2[0-3]):[0-5]\d$
-	reg, _ := regexp.Compile(`^(?:[01]\d|2[0-3]):[0-5]\d$`)
-	// 返回nil表示验证通过，否则返回错误信息
-	if reg.MatchString(str) {
-		return nil
-	}
-	return errors.New("请输入正确的时间格式")
 }
 
 // createInputTime 创建时间输入框
 func createInputTime(label string) *widget.Entry {
 	input := widget.NewEntry()
 	input.SetPlaceHolder(label)
-	input.Validator = validatorTime
+	input.Validator = util.ValidatorTime
 	return input
 }
 
@@ -83,4 +73,12 @@ func (s *Setting) CreateContainer() *fyne.Container {
 		)
 	}
 	return s.Container
+}
+
+// UpdateByConfig 更新设置容器内容，从配置文件中读取配置信息，并更新设置容器内容。
+func (s *Setting) UpdateByConfig(c *config.Config) {
+	CreateSetting().EnableAuto.SetChecked(c.Enable)
+	s.judgeInputTime(c.Enable)
+	CreateSetting().LightInput.SetText(c.LightTime)
+	CreateSetting().DarkInput.SetText(c.DarkTime)
 }

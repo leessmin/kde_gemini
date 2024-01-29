@@ -1,0 +1,20 @@
+{
+  "color_theme": {
+    "enable": true,
+    "light": "MacSonomaLight",
+    "dark": "MacSonomaDark"
+  },
+  "dark_time": "18:00",
+  "enable": true,
+  "global_theme": {
+    "enable": true,
+    "light": "com.github.vinceliuice.MacSonoma-Light",
+    "dark": "com.github.vinceliuice.MacSonoma-Dark"
+  },
+  "konsole_theme": {
+    "enable": false,
+    "light": "Wings-Light-Konsole",
+    "dark": "Breeze"
+  },
+  "light_time": "07:00"
+}
