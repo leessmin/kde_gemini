@@ -42,3 +42,13 @@ func (c *ColorThemePlugin) GetTheme() []string {
 
 	return themeList
 }
+
+func (c *ColorThemePlugin) SetTheme(theme string) {
+	cmd := exec.Command("plasma-apply-colorscheme", theme)
+
+	out, err := cmd.Output()
+	if err != nil {
+		log.Fatal("列出可用配色方案失败, err:", out)
+	}
+
+}
