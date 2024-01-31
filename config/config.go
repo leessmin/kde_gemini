@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"kde_gemini/notice"
 	"kde_gemini/util"
 	"sync"
 
@@ -98,7 +99,14 @@ func (c *Config) VerifyConfiguration() error {
 // SaveConfiguration 储存配置文件
 func SaveConfiguration(c *Config) {
 	if err := c.VerifyConfiguration(); err != nil {
-		fmt.Println("配置不完整, err:", err)
+		// 启动通知
+		n := notice.New("kde_gemini", fmt.Sprint("储存配置文件失败\n", err.Error()))
+		n.AddArg("--urgency=", "low")
+		n.AddArg("--expire-time=", "5000")
+		n.AddArg("--app-name=", "kde_gemini")
+		n.AddArg("--icon=","dialog-error")
+		n.Startup()
+		go notice.PlayError()
 		return
 	}
 
