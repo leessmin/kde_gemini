@@ -32,3 +32,14 @@ func (g *GlobalThemePlugin) GetTheme() []string {
 
 	return themeList
 }
+
+func (g *GlobalThemePlugin) SetTheme(theme string) {
+	// 列出可用的全局主题包
+	cmd := exec.Command("lookandfeeltool", "-a", theme)
+
+	// 收集命令的结果
+	out, err := cmd.Output()
+	if err != nil {
+		log.Fatal("获取全局主题失败, err:", out)
+	}
+}

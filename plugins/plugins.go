@@ -4,4 +4,5 @@ package plugins
 // PluginsInterface 插件interface
 type PluginsInterface interface {
 	GetTheme() []string
+	SetTheme(string)
 }

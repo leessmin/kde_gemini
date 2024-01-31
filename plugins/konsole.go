@@ -32,6 +32,10 @@ func (k *KonsoleThemePlugin) GetTheme() []string {
 	return append(globalFileList, userFileList...)
 }
 
+func (k *KonsoleThemePlugin) SetTheme(theme string){
+	
+}
+
 // path_str 读取的目录名称  needName 需要的后缀名
 // readFileName 读取目录下的所有文件名
 func getAllFileName(path_str string, needName string) []string {
