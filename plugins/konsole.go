@@ -1,11 +1,34 @@
 package plugins
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
+
+var (
+	// 用户主题路径
+	user_path string
+	// 全局主题路径
+	global_path string
+	// 全局配置文件
+	config_path string
+)
+
+func init() {
+	global_path = "/usr/share/konsole"
+	// 获取当前用户路径
+	u_home, err := os.UserHomeDir()
+	if err != nil {
+		log.Println("用户konsole配置文件路径, err: ", err)
+	}
+	// 用户主题"~/.local/share/konsole"
+	user_path = filepath.Join(u_home, ".local/share/konsole")
+	config_path = filepath.Join(u_home, ".config/konsolerc")
+}
 
 type KonsoleThemePlugin struct{}
 
@@ -14,17 +37,6 @@ func NewKonsoleThemePlugin() *KonsoleThemePlugin {
 }
 
 func (k *KonsoleThemePlugin) GetTheme() []string {
-	// 全局主题
-	const global_path = "/usr/share/konsole"
-
-	// 获取当前用户路径
-	u_home, err := os.UserHomeDir()
-	if err != nil {
-		log.Println("获取用户主题失败, err: ", err)
-		return []string{}
-	}
-	// 用户主题"~/.local/share/konsole"
-	user_path := filepath.Join(u_home, ".local/share/konsole")
 
 	globalFileList := getAllFileName(global_path, ".colorscheme")
 	userFileList := getAllFileName(user_path, ".colorscheme")
@@ -32,8 +44,68 @@ func (k *KonsoleThemePlugin) GetTheme() []string {
 	return append(globalFileList, userFileList...)
 }
 
-func (k *KonsoleThemePlugin) SetTheme(theme string){
-	
+// 设置主题
+func (k *KonsoleThemePlugin) SetTheme(themeType, lightTheme, darkTheme string) {
+
+	// 创建配置文件
+	k.CreateDefaultTheme()
+	k.CreateTheme("Light", lightTheme)
+	k.CreateTheme("Dark", darkTheme)
+}
+
+// CreateTheme 创建主题配置文件
+func (k *KonsoleThemePlugin) CreateTheme(theme, ColorScheme string) {
+	profilePath := filepath.Join(user_path, theme+".profile")
+	file, err := os.OpenFile(profilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		log.Println("读取配置文件失败, err: ", err)
+	}
+	defer file.Close()
+	fileInfo, _ := file.Stat()
+	content := ""
+	if isThemeExist(profilePath) && fileInfo.Size() > 0 {
+		// 文件存在
+		buffer := make([]byte, fileInfo.Size())
+		i, _ := file.Read(buffer)
+		content = string(buffer[:i])
+	} else {
+		// 文件不存在
+		content = `[Appearance]
+ColorScheme = Breeze
+
+[General]
+Command = /bin/bash
+Name = Fish
+Parent = FALLBACK/
+`
+	}
+
+	// 使用正则表达式 替换 ColorScheme ColorScheme\s*=\s*\S+\s
+	reg := regexp.MustCompile(`ColorScheme\s*=\s*\S+\s`)
+	writeContent := reg.ReplaceAllString(content, fmt.Sprintf("ColorScheme = %v\n", ColorScheme))
+
+	// 写入文件
+	file.WriteString(writeContent)
+}
+
+// CreateDefaultTheme 创建默认配置文件
+func (k *KonsoleThemePlugin) CreateDefaultTheme() {
+	defaultConfig := `[Appearance]
+ColorScheme = Breeze
+
+[General]
+Command = /bin/bash
+Name = Fish
+Parent = FALLBACK/
+`
+
+	file, err := os.OpenFile(filepath.Join(user_path, "Default.profile"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	fmt.Println(filepath.Join(user_path, "Default.profile"))
+	if err != nil {
+		log.Println("读取默认配置文件失败, err: ", err)
+	}
+	defer file.Close()
+	file.WriteString(defaultConfig)
 }
 
 // path_str 读取的目录名称  needName 需要的后缀名
@@ -56,4 +128,12 @@ func getAllFileName(path_str string, needName string) []string {
 	}
 
 	return nameList
+}
+
+// IsThemeExist 判断文件是否存在
+func isThemeExist(p string) bool {
+	// 用户主题"~/.local/share/konsole"
+	info := filepath.Join(user_path)
+	_, err := os.Stat(info)
+	return err == nil
 }
