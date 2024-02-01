@@ -40,6 +40,6 @@ func (g *GlobalThemePlugin) SetTheme(theme string) {
 	// 收集命令的结果
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal("获取全局主题失败, err:", out)
+		log.Fatal("设置全局主题失败, err:", out)
 	}
 }

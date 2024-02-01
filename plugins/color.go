@@ -48,7 +48,7 @@ func (c *ColorThemePlugin) SetTheme(theme string) {
 
 	out, err := cmd.Output()
 	if err != nil {
-		log.Fatal("列出可用配色方案失败, err:", out)
+		log.Fatal("设置配色方案失败, err:", out)
 	}
 
 }
