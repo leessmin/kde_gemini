@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -21,5 +22,11 @@ func TestCreateDefaultTheme(t *testing.T) {
 
 func TestSetTheme(t *testing.T) {
 	k := NewKonsoleThemePlugin()
+	fmt.Println("1")
 	k.SetTheme("Dark", "Wings-Light-Konsole", "Breeze")
+}
+
+func TestModifyConfig(t *testing.T) {
+	k := NewKonsoleThemePlugin()
+	k.ModifyConfig("Dark")
 }
