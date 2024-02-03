@@ -3,7 +3,6 @@ package ui
 import (
 	"kde_gemini/config"
 	"kde_gemini/util"
-	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -33,7 +32,6 @@ func CreateSetting() *Setting {
 			DarkInput:  createInputTime("请输入dark主题时间..."),
 			EnableAuto: widget.NewCheck("是否启用暗黑模式", func(value bool) {
 				SettingUI.judgeInputTime(value)
-				log.Println("Check set to", value)
 			}),
 		}
 		SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked)

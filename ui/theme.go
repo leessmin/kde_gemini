@@ -4,7 +4,6 @@ import (
 	"image/color"
 	"kde_gemini/config"
 	"kde_gemini/plugins"
-	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -58,40 +57,31 @@ func (t *Theme) initItem() {
 	t.ThemeItemList[GlobalTheme] = createThemeItem(
 		"全局主题",
 		func(b bool) {
-			log.Println("全局主题,check", b)
 		},
 		[]string{},
 		func(s string) {
-			log.Println("light", s)
 		},
 		func(s string) {
-			log.Println("dark", s)
 		},
 	)
 	t.ThemeItemList[ColorTheme] = createThemeItem(
 		"颜色",
 		func(b bool) {
-			log.Println("颜色,check", b)
 		},
 		[]string{},
 		func(s string) {
-			log.Println("light", s)
 		},
 		func(s string) {
-			log.Println("dark", s)
 		},
 	)
 	t.ThemeItemList[KonsoleTheme] = createThemeItem(
 		"Konsole",
 		func(b bool) {
-			log.Println("Konsole,check", b)
 		},
 		[]string{},
 		func(s string) {
-			log.Println("light", s)
 		},
 		func(s string) {
-			log.Println("dark", s)
 		},
 	)
 }

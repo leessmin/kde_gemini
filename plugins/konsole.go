@@ -134,7 +134,6 @@ Parent = FALLBACK/
 `
 
 	file, err := os.OpenFile(filepath.Join(user_path, "Default.profile"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
-	fmt.Println(filepath.Join(user_path, "Default.profile"))
 	if err != nil {
 		log.Println("读取默认配置文件失败, err: ", err)
 	}
