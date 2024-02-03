@@ -18,7 +18,7 @@ func Run() {
 	geminiApp := app.New()
 	geminiApp.Settings().SetTheme(&theme.ZhTheme{})
 	// 主窗口
-	mainWindow := geminiApp.NewWindow("gemini")
+	mainWindow := geminiApp.NewWindow("kde_gemini")
 
 	confirmBtn := widget.NewButton("确认", ConfirmHandle)
 	cancelBtn := widget.NewButton("恢复", func() {
