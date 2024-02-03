@@ -34,7 +34,7 @@ func modifyThemePlugin(themeType string, p plugins.PluginsInterface, cfg config.
 	}
 
 	// 修改主题
-	p.SetTheme(themeType, cfg.Light, cfg.Light)
+	p.SetTheme(themeType, cfg.Light, cfg.Dark)
 }
 
 // 判断时间 是那个区间
