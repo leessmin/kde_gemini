@@ -27,7 +27,6 @@ func New(Title, Content string) *Notice {
 // 启动通知
 func (n *Notice) Startup() error {
 	n.args = append(n.args, n.Title, n.Content)
-	fmt.Println("运行参数", n.args)
 
 	return exec.Command("notify-send", n.args...).Run()
 }

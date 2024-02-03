@@ -97,7 +97,7 @@ func (c *Config) VerifyConfiguration() error {
 }
 
 // SaveConfiguration 储存配置文件
-func SaveConfiguration(c *Config) {
+func SaveConfiguration(c *Config) error {
 	if err := c.VerifyConfiguration(); err != nil {
 		// 启动通知
 		n := notice.New("kde_gemini", fmt.Sprint("储存配置文件失败\n", err.Error()))
@@ -107,7 +107,7 @@ func SaveConfiguration(c *Config) {
 		n.AddArg("--icon=","dialog-error")
 		n.Startup()
 		go notice.PlayError()
-		return
+		return err
 	}
 
 	viper.Set("enable", c.Enable)
@@ -117,4 +117,5 @@ func SaveConfiguration(c *Config) {
 	viper.Set("color_theme", c.ColorTheme)
 	viper.Set("konsole_theme", c.KonsoleTheme)
 	viper.WriteConfig()
+	return nil
 }

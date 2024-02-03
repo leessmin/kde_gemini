@@ -2,6 +2,8 @@ package ui
 
 import (
 	"kde_gemini/config"
+	"kde_gemini/modify"
+	"kde_gemini/notice"
 	"kde_gemini/theme"
 	"log"
 
@@ -60,5 +62,17 @@ func ConfirmHandle() {
 		},
 	}
 	// 保存配置信息
-	config.SaveConfiguration(&cfg)
+	if err := config.SaveConfiguration(&cfg); err != nil {
+		return
+	}
+
+	modify.ModifyTheme()
+
+	// 提示用户保存成功
+	n := notice.New("kde_gemini", "配置已更新")
+	n.AddArg("--urgency=", "low")
+	n.AddArg("--expire-time=", "5000")
+	n.AddArg("--app-name=", "kde_gemini")
+	n.AddArg("--icon=", "document-save")
+	n.Startup()
 }
