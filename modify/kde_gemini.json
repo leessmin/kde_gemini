@@ -1,0 +1,20 @@
+{
+  "color_theme": {
+    "dark": "",
+    "enable": false,
+    "light": ""
+  },
+  "dark_time": "18:00",
+  "enable": true,
+  "global_theme": {
+    "dark": "",
+    "enable": false,
+    "light": ""
+  },
+  "konsole_theme": {
+    "dark": "",
+    "enable": false,
+    "light": ""
+  },
+  "light_time": "07:00"
+}

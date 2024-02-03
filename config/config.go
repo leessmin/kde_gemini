@@ -46,7 +46,7 @@ func (c *Config) ReadConfiguration() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		// 读取失败，写入默认配置文件
-		viper.SetDefault("enable", true)
+		viper.SetDefault("enable", false)
 		viper.SetDefault("light_time", "07:00")
 		viper.SetDefault("dark_time", "18:00")
 		viper.SetDefault("global_theme", map[string]any{"enable": false, "light": "", "dark": ""})

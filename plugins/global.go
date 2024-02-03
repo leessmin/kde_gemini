@@ -33,7 +33,13 @@ func (g *GlobalThemePlugin) GetTheme() []string {
 	return themeList
 }
 
-func (g *GlobalThemePlugin) SetTheme(theme string) {
+func (g *GlobalThemePlugin) SetTheme(themeType, lightTheme, darkTheme string) {
+	theme, err := judgeTheme(themeType, lightTheme, darkTheme)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	// 列出可用的全局主题包
 	cmd := exec.Command("lookandfeeltool", "-a", theme)
 

@@ -57,7 +57,7 @@ func (k *KonsoleThemePlugin) SetTheme(themeType, lightTheme, darkTheme string) {
 }
 
 // 修改konsole更换主题配置文件
-func (k *KonsoleThemePlugin) ModifyConfig(theme string) {
+func (k *KonsoleThemePlugin) ModifyConfig(themeType string) {
 	// 读取配置文件
 	file, err := os.OpenFile(config_path, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
@@ -73,7 +73,7 @@ func (k *KonsoleThemePlugin) ModifyConfig(theme string) {
 
 	// 使用正则表达式 替换 ColorScheme ColorScheme\s*=\s*\S+\s
 	reg := regexp.MustCompile(`DefaultProfile\s*=\s*\S+\s`)
-	content = reg.ReplaceAllString(content, fmt.Sprintf("DefaultProfile = %v\n", theme+".profile"))
+	content = reg.ReplaceAllString(content, fmt.Sprintf("DefaultProfile = %v\n", themeType+".profile"))
 
 	// 清空文件
 	file.Truncate(0)

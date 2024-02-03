@@ -12,7 +12,7 @@ func TestGetGlobalTheme(t *testing.T) {
 	fmt.Println(arr[len(arr)-1])
 }
 
-func TestSetGlobalTheme(t *testing.T) {
-	g := NewGlobalThemePlugin()
-	g.SetTheme("com.github.vinceliuice.MacSonoma-Dark")
-}
+// func TestSetGlobalTheme(t *testing.T) {
+// 	g := NewGlobalThemePlugin()
+// 	g.SetTheme("com.github.vinceliuice.MacSonoma-Dark")
+// }

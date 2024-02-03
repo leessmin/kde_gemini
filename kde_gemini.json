@@ -12,7 +12,7 @@
     "dark": "com.github.vinceliuice.MacSonoma-Dark"
   },
   "konsole_theme": {
-    "enable": false,
+    "enable": true,
     "light": "Wings-Light-Konsole",
     "dark": "Breeze"
   },
