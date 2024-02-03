@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -17,8 +18,10 @@ import (
 func Run() {
 	geminiApp := app.New()
 	geminiApp.Settings().SetTheme(&theme.ZhTheme{})
+
 	// 主窗口
 	mainWindow := geminiApp.NewWindow("kde_gemini")
+	createTray(geminiApp, mainWindow)
 
 	confirmBtn := widget.NewButton("确认", ConfirmHandle)
 	cancelBtn := widget.NewButton("恢复", func() {
@@ -75,4 +78,20 @@ func ConfirmHandle() {
 	n.AddArg("--app-name=", "kde_gemini")
 	n.AddArg("--icon=", "document-save")
 	n.Startup()
+}
+
+// 托盘
+func createTray(app fyne.App, w fyne.Window) {
+
+	if desk, ok := app.(desktop.App); ok {
+		m := fyne.NewMenu("kde_gemini",
+			fyne.NewMenuItem("显示", func() {
+				w.Show()
+			}))
+		desk.SetSystemTrayMenu(m)
+	}
+
+	w.SetCloseIntercept(func() {
+		w.Hide()
+	})
 }
