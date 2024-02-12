@@ -39,13 +39,13 @@ func modifyThemePlugin(themeType string, p plugins.PluginsInterface, cfg config.
 
 // 判断时间 是那个区间
 func judgeTime(light, dark string) string {
-	format := "15:04"
-	lt, _ := time.ParseInLocation(format, light, time.Local)
-	dt, _ := time.ParseInLocation(format, dark, time.Local)
+	format := "2006-01-02 15:04"
+	nowString := time.Now().Format("2006-01-02")
+	lt, _ := time.ParseInLocation(format, fmt.Sprintf("%s %s", nowString, light), time.Local)
+	dt, _ := time.ParseInLocation(format, fmt.Sprintf("%s %s", nowString, dark), time.Local)
 	now := time.Now()
-	nt, _ := time.ParseInLocation(format, fmt.Sprintf("%v:%v", now.Hour(), now.Minute()), time.Local)
 
-	if nt.Before(lt) || nt.After(dt) {
+	if now.Before(lt) || now.After(dt) {
 		return "Dark"
 	}
 	return "Light"
