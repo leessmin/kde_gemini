@@ -1,8 +1,8 @@
-Website = "https://example.com"
+Website = "https://github.com/leessmin/kde_gemini"
 
 [Details]
-Icon = "Icon.png"
+Icon = "logo.png"
 Name = "kde_gemini"
 ID = "com.leessmin.kde_gemini"
 Version = "0.0.1"
-Build = 1
+Build = 2
