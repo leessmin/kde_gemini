@@ -83,7 +83,7 @@ func nextTime() time.Duration {
 	if now.Before(lt) {
 		return lt.Sub(now).Abs() + 1*time.Second
 	} else if now.After(dt) {
-		return dt.Add(time.Hour*24).Sub(now).Abs() + 1*time.Second
+		return lt.Add(time.Hour*24).Sub(now).Abs() + 1*time.Second
 	} else {
 		return dt.Sub(now).Abs() + 1*time.Second
 	}
