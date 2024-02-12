@@ -80,9 +80,12 @@ func nextTime() time.Duration {
 	dt, _ := time.ParseInLocation(formatTime, fmt.Sprintf("%s %s", nowString, config.GetConfig().DarkTime), time.Local)
 	now := time.Now()
 
-	if now.Before(lt) || now.After(dt) {
+	if now.Before(lt) {
 		return lt.Sub(now).Abs() + 1*time.Second
+	} else if now.After(dt) {
+		return dt.Add(time.Hour*24).Sub(now).Abs() + 1*time.Second
 	} else {
 		return dt.Sub(now).Abs() + 1*time.Second
 	}
+
 }
