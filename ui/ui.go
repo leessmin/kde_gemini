@@ -4,6 +4,7 @@ import (
 	"kde_gemini/config"
 	"kde_gemini/modify"
 	"kde_gemini/notice"
+	"kde_gemini/service"
 	"kde_gemini/theme"
 	"log"
 
@@ -43,6 +44,29 @@ func Run() {
 
 // 确认按钮被点击处理函数
 func ConfirmHandle() {
+	saveConfiguration()
+	modify.ModifyTheme()
+	service.SingletonService().Restart()
+}
+
+// 托盘
+func createTray(app fyne.App, w fyne.Window) {
+
+	if desk, ok := app.(desktop.App); ok {
+		m := fyne.NewMenu("kde_gemini",
+			fyne.NewMenuItem("显示", func() {
+				w.Show()
+			}))
+		desk.SetSystemTrayMenu(m)
+	}
+
+	w.SetCloseIntercept(func() {
+		w.Hide()
+	})
+}
+
+// 保存配置文件
+func saveConfiguration() {
 	// 获取页面的配置信息
 	cfg := config.Config{
 		Enable:    CreateSetting().EnableAuto.Checked,
@@ -69,8 +93,6 @@ func ConfirmHandle() {
 		return
 	}
 
-	modify.ModifyTheme()
-
 	// 提示用户保存成功
 	n := notice.New("kde_gemini", "配置已更新")
 	n.AddArg("--urgency=", "low")
@@ -78,20 +100,4 @@ func ConfirmHandle() {
 	n.AddArg("--app-name=", "kde_gemini")
 	n.AddArg("--icon=", "document-save")
 	n.Startup()
-}
-
-// 托盘
-func createTray(app fyne.App, w fyne.Window) {
-
-	if desk, ok := app.(desktop.App); ok {
-		m := fyne.NewMenu("kde_gemini",
-			fyne.NewMenuItem("显示", func() {
-				w.Show()
-			}))
-		desk.SetSystemTrayMenu(m)
-	}
-
-	w.SetCloseIntercept(func() {
-		w.Hide()
-	})
 }

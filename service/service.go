@@ -2,6 +2,9 @@ package service
 
 import (
 	"context"
+	"fmt"
+	"kde_gemini/config"
+	"kde_gemini/modify"
 	"log"
 	"sync"
 	"time"
@@ -33,31 +36,53 @@ func setTimeOut(ctx context.Context, t *time.Ticker) {
 	case <-ctx.Done():
 		log.Println("任务被终止")
 	case <-t.C:
-		// TODO:时间到
-		log.Println("时间到了")
+		// 到达修改主题时间
+		modify.ModifyTheme()
+		SingletonService().Restart()
 	}
-
-	SingletonService().Restart()
 }
 
 // Start 启动服务
 func (s *serviceStruct) Start() {
-	s.ctx, s.cancel = context.WithCancel(context.Background())
-	s.ticker = time.NewTicker(1 * time.Second)
+	// 启动服务前，先关闭之前存在的服务
+	s.Stop()
 
+	t := nextTime()
+	s.ctx, s.cancel = context.WithCancel(context.Background())
+	s.ticker = time.NewTicker(t)
+
+	log.Println("后台服务启动,执行服务时间为: ", t)
 	go setTimeOut(s.ctx, s.ticker)
 }
 
 // Stop 停止服务
 func (s *serviceStruct) Stop() {
-	s.cancel()
+	if s.cancel != nil {
+		s.cancel()
+	}
 
-	// 停止定时时间
-	s.ticker.Stop()
+	if s.ticker != nil {
+		s.ticker.Stop()
+	}
 }
 
 // Restart 重启服务
 func (s *serviceStruct) Restart() {
 	s.Stop()
 	s.Start()
+}
+
+// 判断下次执行主题修改的时间
+func nextTime() time.Duration {
+	var formatTime string = "2006-01-02 15:04"
+	nowString := time.Now().Format("2006-01-02")
+	lt, _ := time.ParseInLocation(formatTime, fmt.Sprintf("%s %s", nowString, config.GetConfig().LightTime), time.Local)
+	dt, _ := time.ParseInLocation(formatTime, fmt.Sprintf("%s %s", nowString, config.GetConfig().DarkTime), time.Local)
+	now := time.Now()
+
+	if now.Before(lt) || now.After(dt) {
+		return lt.Sub(now).Abs() + 1*time.Second
+	} else {
+		return dt.Sub(now).Abs() + 1*time.Second
+	}
 }
