@@ -5,13 +5,28 @@ import (
 	"fmt"
 	"kde_gemini/notice"
 	"kde_gemini/util"
+	"log"
+	"os"
+	"path/filepath"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
-var config *Config
+var (
+	config     *Config
+	configPath string // 配置文件路径
+)
+
+func init() {
+	// 获取当前用户路径
+	u_home, err := os.UserHomeDir()
+	if err != nil {
+		log.Println("用户konsole配置文件路径, err: ", err)
+	}
+	configPath = filepath.Join(u_home, "/.config/kde_gemini")
+}
 
 // Config 配置信息
 type Config struct {
@@ -42,9 +57,15 @@ func GetConfig() *Config {
 func (c *Config) ReadConfiguration() {
 	viper.SetConfigName("kde_gemini")
 	viper.SetConfigType("json")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath(configPath)
+	fmt.Println(configPath)
 
+	// TODO: 检查配置文件是否存在
+	// 不存在配置文件则创建配置文件
+	// viper存在bug，详情：https://github.com/spf13/viper/issues/1514
 	if err := viper.ReadInConfig(); err != nil {
+		createConfigFile(configPath, "kde_gemini.json")
+		fmt.Println("读取配置文件失败")
 		// 读取失败，写入默认配置文件
 		viper.SetDefault("enable", false)
 		viper.SetDefault("light_time", "07:00")
@@ -52,7 +73,7 @@ func (c *Config) ReadConfiguration() {
 		viper.SetDefault("global_theme", map[string]any{"enable": false, "light": "", "dark": ""})
 		viper.SetDefault("color_theme", map[string]any{"enable": false, "light": "", "dark": ""})
 		viper.SetDefault("konsole_theme", map[string]any{"enable": false, "light": "", "dark": ""})
-		viper.SafeWriteConfig()
+		viper.WriteConfig()
 	}
 
 	// 读取配置文件，并序列化到结构体中
@@ -104,7 +125,7 @@ func SaveConfiguration(c *Config) error {
 		n.AddArg("--urgency=", "low")
 		n.AddArg("--expire-time=", "5000")
 		n.AddArg("--app-name=", "kde_gemini")
-		n.AddArg("--icon=","dialog-error")
+		n.AddArg("--icon=", "dialog-error")
 		n.Startup()
 		go notice.PlayError()
 		return err
@@ -118,4 +139,20 @@ func SaveConfiguration(c *Config) error {
 	viper.Set("konsole_theme", c.KonsoleTheme)
 	viper.WriteConfig()
 	return nil
+}
+
+// createConfigFile 判断配置文件是否存在 不存在则创建配置文件
+func createConfigFile(p, name string) {
+	// 创建目录
+	if err := os.MkdirAll(p, 0777); err != nil {
+		log.Println("创建配置文件失败:", err)
+		return
+	}
+	// 创建文件
+	f, err := os.Create(filepath.Join(p, name))
+	if err != nil {
+		log.Println("创建配置文件失败:", err)
+		return
+	}
+	defer f.Close()
 }
