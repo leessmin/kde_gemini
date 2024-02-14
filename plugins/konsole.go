@@ -75,6 +75,14 @@ func (k *KonsoleThemePlugin) ModifyConfig(themeType string) {
 	reg := regexp.MustCompile(`DefaultProfile\s*=\s*\S+\s`)
 	content = reg.ReplaceAllString(content, fmt.Sprintf("DefaultProfile = %v\n", themeType+".profile"))
 
+	// 判断是否存在 DefaultProfile 如果不存在 手动追加
+	if !reg.MatchString(content) {
+		content = fmt.Sprintf("%s%s \n %s",
+			`[Desktop Entry]
+DefaultProfile=`,
+			themeType+".profile", content)
+	}
+
 	// 清空文件
 	file.Truncate(0)
 	file.Seek(0, 0)
@@ -99,21 +107,23 @@ func (k *KonsoleThemePlugin) CreateTheme(theme, ColorScheme string) {
 		buffer := make([]byte, fileInfo.Size())
 		i, _ := file.Read(buffer)
 		content = string(buffer[:i])
-	} else {
-		// 文件不存在
-		content = `[Appearance]
-ColorScheme = Breeze
-
-[General]
-Command = /bin/bash
-Name = Fish
-Parent = FALLBACK/
-`
 	}
 
 	// 使用正则表达式 替换 ColorScheme ColorScheme\s*=\s*\S+\s
 	reg := regexp.MustCompile(`ColorScheme\s*=\s*\S+\s`)
 	content = reg.ReplaceAllString(content, fmt.Sprintf("ColorScheme = %v\n", ColorScheme))
+
+	// 判断是否存在 ColorScheme 如果不存在 则手动添加
+	if !reg.MatchString(content) {
+		content = fmt.Sprintf(`[Appearance]
+ColorScheme = %s
+
+[General]
+Command = /bin/bash
+Name = %s
+Parent = FALLBACK/
+					`, ColorScheme, theme)
+	}
 
 	// 清空文件
 	file.Truncate(0)
@@ -129,7 +139,7 @@ ColorScheme = Breeze
 
 [General]
 Command = /bin/bash
-Name = Fish
+Name = Default
 Parent = FALLBACK/
 `
 
