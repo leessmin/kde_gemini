@@ -6,7 +6,6 @@ import (
 	"kde_gemini/notice"
 	"kde_gemini/service"
 	"kde_gemini/theme"
-	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -24,10 +23,8 @@ func Run() {
 	mainWindow := geminiApp.NewWindow("kde_gemini")
 	createTray(geminiApp, mainWindow)
 
-	confirmBtn := widget.NewButton("确认", ConfirmHandle)
-	cancelBtn := widget.NewButton("恢复", func() {
-		log.Println("取消按钮被点击")
-	})
+	confirmBtn := widget.NewButton("确认", confirmHandle)
+	cancelBtn := widget.NewButton("取消", recoverHandle)
 
 	tabs := container.NewAppTabs(
 		container.NewTabItem("设置", CreateSetting().CreateContainer()),
@@ -43,10 +40,16 @@ func Run() {
 }
 
 // 确认按钮被点击处理函数
-func ConfirmHandle() {
+func confirmHandle() {
 	saveConfiguration()
 	modify.ModifyTheme()
 	service.SingletonService().Restart()
+}
+
+// 恢复按钮点击确认处理函数
+func recoverHandle() {
+	CreateSetting().UpdateByConfig(config.GetConfig())
+	CreateTheme().UpdateByConfig(config.GetConfig())
 }
 
 // 托盘
