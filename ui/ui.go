@@ -16,7 +16,7 @@ import (
 )
 
 func Run() {
-	geminiApp := app.New()
+	geminiApp := app.NewWithID("com.leessmin.kde_gemini")
 	geminiApp.Settings().SetTheme(&theme.ZhTheme{})
 
 	// 主窗口
