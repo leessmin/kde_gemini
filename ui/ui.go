@@ -41,7 +41,10 @@ func Run() {
 
 // 确认按钮被点击处理函数
 func confirmHandle() {
-	saveConfiguration()
+	// 保存失败不执行下面操作
+	if err := saveConfiguration(); err != nil {
+		return
+	}
 	modify.ModifyTheme()
 	service.SingletonService().Restart()
 }
@@ -69,7 +72,7 @@ func createTray(app fyne.App, w fyne.Window) {
 }
 
 // 保存配置文件
-func saveConfiguration() {
+func saveConfiguration() error {
 	// 获取页面的配置信息
 	cfg := config.Config{
 		Enable:    CreateSetting().EnableAuto.Checked,
@@ -93,7 +96,7 @@ func saveConfiguration() {
 	}
 	// 保存配置信息
 	if err := config.SaveConfiguration(&cfg); err != nil {
-		return
+		return err
 	}
 
 	// 提示用户保存成功
@@ -103,4 +106,6 @@ func saveConfiguration() {
 	n.AddArg("--app-name=", "kde_gemini")
 	n.AddArg("--icon=", "document-save")
 	n.Startup()
+
+	return nil
 }
