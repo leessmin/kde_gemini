@@ -127,7 +127,6 @@ func SaveConfiguration(c *Config) error {
 		n.AddArg("--app-name=", "kde_gemini")
 		n.AddArg("--icon=", "dialog-error")
 		n.Startup()
-		go notice.PlayError()
 		return err
 	}
 
