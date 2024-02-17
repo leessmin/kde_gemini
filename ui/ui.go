@@ -46,7 +46,7 @@ func confirmHandle() {
 	service.SingletonService().Restart()
 }
 
-// 恢复按钮点击确认处理函数
+// 取消按钮点击确认处理函数
 func recoverHandle() {
 	CreateSetting().UpdateByConfig(config.GetConfig())
 	CreateTheme().UpdateByConfig(config.GetConfig())
