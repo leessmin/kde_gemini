@@ -5,4 +5,4 @@ Website = "https://github.com/leessmin/kde_gemini"
   Name = "kde_gemini"
   ID = "com.leessmin.kde_gemini"
   Version = "0.0.1"
-  Build = 8
+  Build = 10
