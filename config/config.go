@@ -58,14 +58,14 @@ func (c *Config) ReadConfiguration() {
 	viper.SetConfigName("kde_gemini")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(configPath)
-	fmt.Println(configPath)
+	log.Println(configPath)
 
 	// TODO: 检查配置文件是否存在
 	// 不存在配置文件则创建配置文件
 	// viper存在bug，详情：https://github.com/spf13/viper/issues/1514
 	if err := viper.ReadInConfig(); err != nil {
 		createConfigFile(configPath, "kde_gemini.json")
-		fmt.Println("读取配置文件失败")
+		log.Println("读取配置文件失败")
 		// 读取失败，写入默认配置文件
 		viper.SetDefault("enable", false)
 		viper.SetDefault("light_time", "07:00")
