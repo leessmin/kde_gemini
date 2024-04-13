@@ -13,13 +13,13 @@ var (
 	// 用户主题路径
 	user_path string
 	// 全局主题路径
-	global_path string
+	GLOBAL_PATH string
 	// 全局配置文件
-	config_path string
+	CONFIG_PATH string
 )
 
 func init() {
-	global_path = "/usr/share/konsole"
+	GLOBAL_PATH = "/usr/share/konsole"
 	// 获取当前用户路径
 	u_home, err := os.UserHomeDir()
 	if err != nil {
@@ -27,7 +27,7 @@ func init() {
 	}
 	// 用户主题"~/.local/share/konsole"
 	user_path = filepath.Join(u_home, ".local/share/konsole")
-	config_path = filepath.Join(u_home, ".config/konsolerc")
+	CONFIG_PATH = filepath.Join(u_home, ".config/konsolerc")
 }
 
 type KonsoleThemePlugin struct{}
@@ -38,7 +38,7 @@ func NewKonsoleThemePlugin() *KonsoleThemePlugin {
 
 func (k *KonsoleThemePlugin) GetTheme() []string {
 
-	globalFileList := getAllFileName(global_path, ".colorscheme")
+	globalFileList := getAllFileName(GLOBAL_PATH, ".colorscheme")
 	userFileList := getAllFileName(user_path, ".colorscheme")
 
 	return append(globalFileList, userFileList...)
@@ -59,7 +59,7 @@ func (k *KonsoleThemePlugin) SetTheme(themeType, lightTheme, darkTheme string) {
 // 修改konsole更换主题配置文件
 func (k *KonsoleThemePlugin) ModifyConfig(themeType string) {
 	// 读取配置文件
-	file, err := os.OpenFile(config_path, os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(CONFIG_PATH, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		log.Println("读取配置文件失败, err: ", err)
 	}
@@ -176,7 +176,7 @@ func getAllFileName(path_str string, needName string) []string {
 // IsThemeExist 判断文件是否存在
 func isThemeExist(p string) bool {
 	// 用户主题"~/.local/share/konsole"
-	info := filepath.Join(user_path)
+	info := filepath.Join(p)
 	_, err := os.Stat(info)
 	return err == nil
 }
