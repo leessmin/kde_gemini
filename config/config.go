@@ -44,12 +44,14 @@ type Config struct {
 	KonsoleTheme ThemeConfig `json:"konsoleTheme" mapstructure:"konsole_theme"`
 }
 
+var onceFunc = sync.OnceFunc(func() {
+	config = &Config{}
+	config.ReadConfiguration()
+})
+
 // GetConfig 获取配置文件对象  单例模式
 func GetConfig() *Config {
-	sync.OnceFunc(func() {
-		config = &Config{}
-		config.ReadConfiguration()
-	})()
+	onceFunc()
 	return config
 }
 
