@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"fmt"
+	"image/color"
 	"kde_gemini/config"
 	"kde_gemini/modify"
 	"kde_gemini/notice"
@@ -9,6 +11,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
@@ -30,10 +33,20 @@ func Run() {
 	tabs := container.NewAppTabs(
 		container.NewTabItem("设置", CreateSetting().CreateContainer()),
 		container.NewTabItem("主题", CreateTheme().CreateContainer()),
+		container.NewTabItem("关于", container.NewVBox(
+			canvas.NewText(fmt.Sprint("VERSION: ", config.GetConfig().Version), color.White),
+		)),
 	)
 
 	// 主ui程序
-	mainContainer := container.NewVBox(tabs, container.New(layout.NewGridLayout(2), confirmBtn, cancelBtn))
+	mainContainer := container.NewVBox(
+		tabs,
+		container.New(
+			layout.NewGridLayout(2),
+			confirmBtn,
+			cancelBtn,
+		),
+	)
 
 	mainWindow.SetContent(mainContainer)
 	mainWindow.Resize(fyne.NewSize(500, 600))
@@ -58,7 +71,6 @@ func recoverHandle() {
 
 // 托盘
 func createTray(app fyne.App, w fyne.Window) {
-
 	if desk, ok := app.(desktop.App); ok {
 		m := fyne.NewMenu("kde_gemini",
 			fyne.NewMenuItem("显示", func() {

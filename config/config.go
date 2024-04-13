@@ -42,7 +42,11 @@ type Config struct {
 	ColorTheme ThemeConfig `json:"colorTheme" mapstructure:"color_theme"`
 	// Konsole主题
 	KonsoleTheme ThemeConfig `json:"konsoleTheme" mapstructure:"konsole_theme"`
+	// 版本号
+	Version string `json:"version" mapstructure:"version"`
 }
+
+const VERSION = "0.1.0"
 
 var onceFunc = sync.OnceFunc(func() {
 	config = &Config{}
@@ -62,7 +66,6 @@ func (c *Config) ReadConfiguration() {
 	viper.AddConfigPath(configPath)
 	log.Println(configPath)
 
-	// TODO: 检查配置文件是否存在
 	// 不存在配置文件则创建配置文件
 	// viper存在bug，详情：https://github.com/spf13/viper/issues/1514
 	if err := viper.ReadInConfig(); err != nil {
@@ -75,11 +78,15 @@ func (c *Config) ReadConfiguration() {
 		viper.SetDefault("global_theme", map[string]any{"enable": false, "light": "", "dark": ""})
 		viper.SetDefault("color_theme", map[string]any{"enable": false, "light": "", "dark": ""})
 		viper.SetDefault("konsole_theme", map[string]any{"enable": false, "light": "", "dark": ""})
+		viper.SetDefault("version", VERSION)
 		viper.WriteConfig()
 	}
 
 	// 读取配置文件，并序列化到结构体中
 	viper.Unmarshal(c)
+
+	updateConfig(c)
+	log.Println("VERSION:", c.Version)
 
 	// 监听配置文件变化，重新序列化
 	viper.OnConfigChange(func(e fsnotify.Event) {
@@ -138,6 +145,7 @@ func SaveConfiguration(c *Config) error {
 	viper.Set("global_theme", c.GlobalTheme)
 	viper.Set("color_theme", c.ColorTheme)
 	viper.Set("konsole_theme", c.KonsoleTheme)
+	viper.Set("version", c.Version)
 	viper.WriteConfig()
 	return nil
 }
@@ -156,4 +164,14 @@ func createConfigFile(p, name string) {
 		return
 	}
 	defer f.Close()
+}
+
+// 判断本地配置文件和系统配置文件版本是否相等，不相等就更新配置文件
+// updateConfig 更新配置文件
+func updateConfig(c *Config) {
+	if c.Version == VERSION {
+		return
+	}
+	c.Version = VERSION
+	SaveConfiguration(c)
 }
