@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"image/color"
 	"kde_gemini/config"
 	"kde_gemini/modify"
 	"kde_gemini/notice"
@@ -11,7 +10,6 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
@@ -34,7 +32,7 @@ func Run() {
 		container.NewTabItem("设置", CreateSetting().CreateContainer()),
 		container.NewTabItem("主题", CreateTheme().CreateContainer()),
 		container.NewTabItem("关于", container.NewVBox(
-			canvas.NewText(fmt.Sprint("VERSION: ", config.GetConfig().Version), color.White),
+			widget.NewLabel(fmt.Sprint("VERSION: ", config.GetConfig().Version)),
 		)),
 	)
 
