@@ -15,6 +15,10 @@ make user-install #全局安装
 
 sudo make install #全局安装
 ```
+## arch linux
+```sh
+yay -S kde_gemini
+```
 
 卸载可参考MakeFile文件里的操作。或者使用下面的卸载命令命令（需保留MakeFile文件）
 ```sh
