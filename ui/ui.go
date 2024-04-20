@@ -48,7 +48,8 @@ func Run() {
 
 	mainWindow.SetContent(mainContainer)
 	mainWindow.Resize(fyne.NewSize(500, 600))
-	mainWindow.ShowAndRun()
+	// mainWindow.ShowAndRun()
+	geminiApp.Run()
 }
 
 // 确认按钮被点击处理函数
