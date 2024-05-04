@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	"kde_gemini/config"
 	"kde_gemini/modify"
 	"kde_gemini/notice"
@@ -31,9 +30,7 @@ func Run() {
 	tabs := container.NewAppTabs(
 		container.NewTabItem("设置", CreateSetting().CreateContainer()),
 		container.NewTabItem("主题", CreateTheme().CreateContainer()),
-		container.NewTabItem("关于", container.NewVBox(
-			widget.NewLabel(fmt.Sprint("VERSION: ", config.GetConfig().Version)),
-		)),
+		container.NewTabItem("关于", createAbout()),
 	)
 
 	// 主ui程序
