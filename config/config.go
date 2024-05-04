@@ -46,7 +46,7 @@ type Config struct {
 	Version string `json:"version" mapstructure:"version"`
 }
 
-const VERSION = "0.1.0"
+const VERSION = "0.2.0"
 
 var onceFunc = sync.OnceFunc(func() {
 	config = &Config{}

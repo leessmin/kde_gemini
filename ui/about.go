@@ -15,7 +15,7 @@ import (
 var thankList [3]string = [3]string{
 	"fyne-受Material设计启发的Go语言跨平台图形用户界面工具包",
 	"viper-Go语言配置操作",
-	"fsnotify-是一个Go库，用于在Linux等系统上提供跨平台的文件系统通知",
+	"fsnotify-用于在系统上提供跨平台的文件系统通知",
 }
 
 func createAbout() *fyne.Container {
