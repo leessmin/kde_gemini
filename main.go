@@ -6,6 +6,7 @@ import (
 	"kde_gemini/ui"
 )
 
+// -tags wayland
 func main() {
 	modify.ModifyTheme()
 	service.SingletonService().Start()
