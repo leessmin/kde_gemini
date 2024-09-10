@@ -2,7 +2,7 @@ package ui
 
 import (
 	"kde_gemini/config"
-	"kde_gemini/util"
+	"kde_gemini/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"

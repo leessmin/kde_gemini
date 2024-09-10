@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"kde_gemini/notice"
-	"kde_gemini/util"
+	"kde_gemini/utils"
 	"log"
 	"os"
 	"path/filepath"
