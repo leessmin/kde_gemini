@@ -2,6 +2,7 @@ package util
 
 import (
 	"errors"
+	"kde_gemini/i18n"
 	"regexp"
 )
 
@@ -13,5 +14,5 @@ func ValidatorTime(str string) error {
 	if reg.MatchString(str) {
 		return nil
 	}
-	return errors.New("请输入正确的时间格式")
+	return errors.New(i18n.GetText("timeFormat"))
 }

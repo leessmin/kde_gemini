@@ -1,0 +1,43 @@
+timeFormat = "Please enter the correct time format"
+
+# main
+main_apply = "Apply"
+main_cancel = "Cancel"
+main_setting = "Setting"
+main_theme = "Theme"
+main_about = "About"
+main_display = "Display"
+
+# setting
+setting_lightTime = "Please enter the light theme time..."
+setting_darkTime = "Please enter the dark theme time..."
+setting_enableDarkMode = "Whether to enable dark mode"
+
+#theme
+theme_systemTheme = "System theme"
+theme_systemColor = "System color"
+theme_konsole = "Konsole"
+
+# about
+about_introduce = "This project could not have been completed without the following open source projects. Thank you here!!"
+about_fyne = "fyne- Go cross-platform graphical user interface toolkit inspired by Material design"
+about_viper = "viper-Go configuration operation library"
+about_fsnotify = "fsnotify- Used to provide cross-platform file system notification on the system"
+
+# notice
+notice_ConfigurationHasBeenUpdated = "Configuration has been updated"
+notice_themeUpdatedOk = "The theme is modified successfully. The current theme is %s"
+
+# logs
+logs_taskTerminated = "Task terminated"
+logs_backgroundServerExec = "The background service is started and the execution time is:"
+logs_SystemThemeErr = "Description Failed to set the system theme because the theme type is incorrect"
+logs_userKonsolePathErr = "User konsole configuration file path, err: "
+logs_readConfigFileErr = "Failed to read the configuration file, err: "
+logs_read = "read"
+logs_failed = "failed, err: "
+logs_getSystemThemeErr = "Failed to obtain the system theme Failed to read the configuration file, err:"
+logs_setSystemThemeErr = "Failed to set the system theme, err:"
+logs_getColorsErr = "Failed to list available color schemes, err:"
+logs_setColorsErr = "Failed to set the color scheme, err:"
+logs_themeLaunchUpdate = "running theme update:"

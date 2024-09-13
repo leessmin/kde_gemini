@@ -2,6 +2,7 @@ package ui
 
 import (
 	"kde_gemini/config"
+	"kde_gemini/i18n"
 	"kde_gemini/modify"
 	"kde_gemini/notice"
 	"kde_gemini/service"
@@ -24,13 +25,13 @@ func Run() {
 	mainWindow := geminiApp.NewWindow("kde_gemini")
 	createTray(geminiApp, mainWindow)
 
-	confirmBtn := widget.NewButton("确认", confirmHandle)
-	cancelBtn := widget.NewButton("取消", recoverHandle)
+	confirmBtn := widget.NewButton(i18n.GetText("main_apply"), confirmHandle)
+	cancelBtn := widget.NewButton(i18n.GetText("main_cancel"), recoverHandle)
 
 	tabs := container.NewAppTabs(
-		container.NewTabItem("设置", CreateSetting().CreateContainer()),
-		container.NewTabItem("主题", CreateTheme().CreateContainer()),
-		container.NewTabItem("关于", createAbout()),
+		container.NewTabItem(i18n.GetText("main_setting"), CreateSetting().CreateContainer()),
+		container.NewTabItem(i18n.GetText("main_theme"), CreateTheme().CreateContainer()),
+		container.NewTabItem(i18n.GetText("main_about"), createAbout()),
 	)
 
 	// 主ui程序
@@ -69,7 +70,7 @@ func recoverHandle() {
 func createTray(app fyne.App, w fyne.Window) {
 	if desk, ok := app.(desktop.App); ok {
 		m := fyne.NewMenu("kde_gemini",
-			fyne.NewMenuItem("显示", func() {
+			fyne.NewMenuItem(i18n.GetText("main_display"), func() {
 				w.Show()
 			}))
 		desk.SetSystemTrayMenu(m)
@@ -109,7 +110,7 @@ func saveConfiguration() error {
 	}
 
 	// 提示用户保存成功
-	n := notice.New("kde_gemini", "配置已更新")
+	n := notice.New("kde_gemini", i18n.GetText("notice_ConfigurationHasBeenUpdated"))
 	n.AddArg("--urgency=", "low")
 	n.AddArg("--expire-time=", "5000")
 	n.AddArg("--app-name=", "kde_gemini")

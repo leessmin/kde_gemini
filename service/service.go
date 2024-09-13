@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"kde_gemini/config"
+	"kde_gemini/i18n"
 	"kde_gemini/modify"
 	"log"
 	"sync"
@@ -34,7 +35,7 @@ func SingletonService() *serviceStruct {
 func setTimeOut(ctx context.Context, t *time.Ticker) {
 	select {
 	case <-ctx.Done():
-		log.Println("任务被终止")
+		log.Println(i18n.GetText("logs_taskTerminated"))
 	case <-t.C:
 		// 到达修改主题时间
 		modify.ModifyTheme()
@@ -51,7 +52,7 @@ func (s *serviceStruct) Start() {
 	s.ctx, s.cancel = context.WithCancel(context.Background())
 	s.ticker = time.NewTicker(t)
 
-	log.Println("后台服务启动,执行服务时间为: ", t)
+	log.Println(i18n.GetText("logs_backgroundServerExec"), t)
 	go setTimeOut(s.ctx, s.ticker)
 }
 

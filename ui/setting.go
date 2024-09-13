@@ -2,7 +2,8 @@ package ui
 
 import (
 	"kde_gemini/config"
-	"kde_gemini/utils"
+	"kde_gemini/i18n"
+	util "kde_gemini/utils"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -28,9 +29,9 @@ type Setting struct {
 func CreateSetting() *Setting {
 	if SettingUI == nil {
 		SettingUI = &Setting{
-			LightInput: createInputTime("请输入light主题时间..."),
-			DarkInput:  createInputTime("请输入dark主题时间..."),
-			EnableAuto: widget.NewCheck("是否启用暗黑模式", func(value bool) {
+			LightInput: createInputTime(i18n.GetText("setting_lightTime")),
+			DarkInput:  createInputTime(i18n.GetText("setting_darkTime")),
+			EnableAuto: widget.NewCheck(i18n.GetText("setting_enableDarkMode"), func(value bool) {
 				SettingUI.judgeInputTime(value)
 			}),
 		}

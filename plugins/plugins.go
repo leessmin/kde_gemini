@@ -2,6 +2,7 @@ package plugins
 
 import (
 	"errors"
+	"kde_gemini/i18n"
 )
 
 // 主题的获取、设置等方法
@@ -19,7 +20,7 @@ func judgeTheme(themeType, lightTheme, darkTheme string) (string, error) {
 	} else if themeType == "Dark" {
 		theme = darkTheme
 	} else {
-		return "", errors.New("设置全局主题失败, 主题类型错误")
+		return "", errors.New(i18n.GetText("logs_SystemThemeErr"))
 	}
 	return theme, nil
 }

@@ -3,6 +3,7 @@ package ui
 import (
 	"image/color"
 	"kde_gemini/config"
+	"kde_gemini/i18n"
 	"kde_gemini/plugins"
 
 	"fyne.io/fyne/v2"
@@ -55,7 +56,7 @@ func (t *Theme) CreateContainer() *fyne.Container {
 func (t *Theme) initItem() {
 	t.ThemeItemList = make(map[ThemeEnum]*ThemeItem)
 	t.ThemeItemList[GlobalTheme] = createThemeItem(
-		"全局主题",
+		i18n.GetText("theme_systemTheme"),
 		func(b bool) {
 		},
 		[]string{},
@@ -65,7 +66,7 @@ func (t *Theme) initItem() {
 		},
 	)
 	t.ThemeItemList[ColorTheme] = createThemeItem(
-		"颜色",
+		i18n.GetText("theme_systemColor"),
 		func(b bool) {
 		},
 		[]string{},
@@ -75,7 +76,7 @@ func (t *Theme) initItem() {
 		},
 	)
 	t.ThemeItemList[KonsoleTheme] = createThemeItem(
-		"Konsole",
+		i18n.GetText("theme_konsole"),
 		func(b bool) {
 		},
 		[]string{},

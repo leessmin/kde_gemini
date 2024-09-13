@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image/color"
 	"kde_gemini/config"
+	"kde_gemini/i18n"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
@@ -13,9 +14,9 @@ import (
 )
 
 var thankList [3]string = [3]string{
-	"fyne-受Material设计启发的Go语言跨平台图形用户界面工具包",
-	"viper-Go语言配置操作",
-	"fsnotify-用于在系统上提供跨平台的文件系统通知",
+	i18n.GetText("about_fyne"),
+	i18n.GetText("about_viper"),
+	i18n.GetText("about_fsnotify"),
 }
 
 func createAbout() *fyne.Container {
@@ -28,7 +29,7 @@ func createAbout() *fyne.Container {
 		layout.NewVBoxLayout(),
 		container.New(layout.NewCenterLayout(), widget.NewLabel("kde_gemini")),
 		container.New(layout.NewCenterLayout(), widget.NewLabel(fmt.Sprint("VERSION: ", config.GetConfig().Version))),
-		container.New(layout.NewCenterLayout(), widget.NewLabel("没有以下开源项目，本项目根本无法完成。在此以表感谢！！！")),
+		container.New(layout.NewCenterLayout(), widget.NewLabel(i18n.GetText("about_introduce"))),
 		list[0],
 		list[1],
 		list[2],

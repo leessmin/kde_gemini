@@ -2,6 +2,7 @@ package plugins
 
 import (
 	"fmt"
+	"kde_gemini/i18n"
 	"log"
 	"os"
 	"path/filepath"
@@ -23,7 +24,7 @@ func init() {
 	// 获取当前用户路径
 	u_home, err := os.UserHomeDir()
 	if err != nil {
-		log.Println("用户konsole配置文件路径, err: ", err)
+		log.Println(i18n.GetText("logs_userKonsolePathErr"), err)
 	}
 	// 用户主题"~/.local/share/konsole"
 	user_path = filepath.Join(u_home, ".local/share/konsole")
@@ -61,7 +62,7 @@ func (k *KonsoleThemePlugin) ModifyConfig(themeType string) {
 	// 读取配置文件
 	file, err := os.OpenFile(CONFIG_PATH, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		log.Println("读取配置文件失败, err: ", err)
+		log.Println(i18n.GetText("logs_readConfigFileErr"), err)
 	}
 	defer file.Close()
 
@@ -96,7 +97,7 @@ func (k *KonsoleThemePlugin) CreateTheme(theme, ColorScheme string) {
 
 	file, err := os.OpenFile(profilePath, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		log.Println("读取配置文件失败, err: ", err)
+		log.Println(i18n.GetText("logs_readConfigFileErr"), err)
 	}
 	defer file.Close()
 
@@ -145,7 +146,7 @@ Parent = FALLBACK/
 
 	file, err := os.OpenFile(filepath.Join(user_path, "Default.profile"), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Println("读取默认配置文件失败, err: ", err)
+		log.Println(i18n.GetText("读取默认配置文件失败, err: "), err)
 	}
 	defer file.Close()
 	file.WriteString(defaultConfig)
@@ -156,7 +157,7 @@ Parent = FALLBACK/
 func getAllFileName(path_str string, needName string) []string {
 	dir, err := os.ReadDir(path_str)
 	if err != nil {
-		log.Println("读取", path_str, "失败, err: ", err)
+		log.Println(i18n.GetText("logs_read"), path_str, i18n.GetText("logs_failed"), err)
 	}
 
 	// 文件名称列表, 用于返回给前端, 不包含文件夹名称, 仅包含文件名称, 不包含后缀名称.

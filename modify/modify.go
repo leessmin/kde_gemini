@@ -3,6 +3,7 @@ package modify
 import (
 	"fmt"
 	"kde_gemini/config"
+	"kde_gemini/i18n"
 	"kde_gemini/notice"
 	"kde_gemini/plugins"
 	"log"
@@ -25,7 +26,7 @@ func ModifyTheme() {
 	// 判断时间
 	themeType := judgeTime(cfg.LightTime, cfg.DarkTime)
 
-	log.Println("主题启动修改:", themeType)
+	log.Println(i18n.GetText("logs_themeLaunchUpdate"), themeType)
 
 	// 启动修改
 	modifyThemePlugin(themeType, plugins.NewGlobalThemePlugin(), cfg.GlobalTheme)
@@ -33,7 +34,7 @@ func ModifyTheme() {
 	modifyThemePlugin(themeType, plugins.NewKonsoleThemePlugin(), cfg.KonsoleTheme)
 
 	// 提示用户保存成功
-	n := notice.New("kde_gemini", fmt.Sprintf("主题修改成功,当前主题为%s", themeType))
+	n := notice.New("kde_gemini", fmt.Sprintf(i18n.GetText("notice_themeUpdatedOk"), themeType))
 	n.AddArg("--urgency=", "low")
 	n.AddArg("--expire-time=", "5000")
 	n.AddArg("--app-name=", "kde_gemini")

@@ -1,0 +1,43 @@
+timeFormat = "请输入正确的时间格式"
+
+# main
+main_apply = "应用"
+main_cancel = "取消"
+main_setting = "设置"
+main_theme = "主题"
+main_about = "关于"
+main_display = "显示"
+
+# setting
+setting_lightTime = "请输入light主题时间..."
+setting_darkTime = "请输入dark主题时间..."
+setting_enableDarkMode = "是否启用暗黑模式"
+
+# theme
+theme_systemTheme = "系统主题"
+theme_systemColor = "系统颜色"
+theme_konsole = "Konsole"
+
+# about
+about_introduce = "没有以下开源项目，本项目根本无法完成。在此以表感谢！！！"
+about_fyne = "fyne-受Material设计启发的Go语言跨平台图形用户界面工具包"
+about_viper = "viper-Go语言配置操作库"
+about_fsnotify = "fsnotify-用于在系统上提供跨平台的文件系统通知"
+
+# notice
+notice_ConfigurationHasBeenUpdated = "配置已更新"
+notice_themeUpdatedOk = "主题修改成功,当前主题为%s"
+
+# logs
+logs_taskTerminated = "任务被终止"
+logs_backgroundServerExec = "后台服务启动,执行服务时间为: "
+logs_SystemThemeErr = "设置系统主题失败, 主题类型错误"
+logs_userKonsolePathErr = "用户konsole配置文件路径, err: "
+logs_readConfigFileErr = "读取配置文件失败, err: "
+logs_read = "读取"
+logs_failed = "失败, err: "
+logs_getSystemThemeErr = "获取系统主题失败, err:"
+logs_setSystemThemeErr = "设置系统主题失败, err:"
+logs_getColorsErr = "列出可用配色方案失败, err:"
+logs_setColorsErr = "设置配色方案失败, err:"
+logs_themeLaunchUpdate = "主题启动修改:"
