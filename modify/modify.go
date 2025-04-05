@@ -13,8 +13,19 @@ import (
 // 时间格式
 const FORMAT_TIME = "2006-01-02 15:04"
 
+var beforeModifyCalled []func()
+
+func AddBeforeModifyCalled(fn func()) {
+	beforeModifyCalled = append(beforeModifyCalled, fn)
+}
+
 // 判断并修改主题
 func ModifyTheme() {
+	// 每次修改主题时运行ModifyCalled
+	for _, call := range beforeModifyCalled {
+		call()
+	}
+
 	// 获取配置
 	cfg := config.GetConfig()
 

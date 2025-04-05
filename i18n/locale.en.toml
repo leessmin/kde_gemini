@@ -12,6 +12,7 @@ main_display = "Display"
 setting_lightTime = "Please enter the light theme time..."
 setting_darkTime = "Please enter the dark theme time..."
 setting_enableDarkMode = "Whether to enable dark mode"
+setting_enableAutoTime = "Turns on from sunset to sunrise"
 
 #theme
 theme_systemTheme = "System theme"
@@ -41,3 +42,4 @@ logs_setSystemThemeErr = "Failed to set the system theme, err:"
 logs_getColorsErr = "Failed to list available color schemes, err:"
 logs_setColorsErr = "Failed to set the color scheme, err:"
 logs_themeLaunchUpdate = "running theme update:"
+logs_timeSystemFormat = "Failed to run timeSystemFormat function err:"

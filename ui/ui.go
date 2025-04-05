@@ -7,6 +7,8 @@ import (
 	"kde_gemini/notice"
 	"kde_gemini/service"
 	"kde_gemini/theme"
+	util "kde_gemini/utils"
+	"log"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -43,6 +45,32 @@ func Run() {
 			cancelBtn,
 		),
 	)
+
+	// 挂在修改前监听
+	modify.AddBeforeModifyCalled(func() {
+		// 保存文件判断是否开启自动设置时间
+		if CreateSetting().EnableAutoTime.Checked {
+			sunsetSunrise, err := util.GetSunsetSunrise()
+			if err != nil {
+				return
+			}
+			lightTime := sunsetSunrise[0]
+			darkTime := sunsetSunrise[1]
+
+			// 修改ui
+			CreateSetting().LightInput.SetText(lightTime)
+			CreateSetting().DarkInput.SetText(darkTime)
+
+			// 修改配置文件
+			cfg := config.GetConfig()
+			cfg.LightTime = lightTime
+			cfg.DarkTime = darkTime
+			// 保存配置信息
+			if err := config.SaveConfiguration(cfg); err != nil {
+				log.Println("Failed to ui call SaveConfiguration, err:", err)
+			}
+		}
+	})
 
 	mainWindow.SetContent(mainContainer)
 	mainWindow.Resize(fyne.NewSize(500, 600))
@@ -85,9 +113,10 @@ func createTray(app fyne.App, w fyne.Window) {
 func saveConfiguration() error {
 	// 获取页面的配置信息
 	cfg := config.Config{
-		Enable:    CreateSetting().EnableAuto.Checked,
-		LightTime: CreateSetting().LightInput.Text,
-		DarkTime:  CreateSetting().DarkInput.Text,
+		Enable:         CreateSetting().EnableAuto.Checked,
+		EnableAutoTime: CreateSetting().EnableAutoTime.Checked,
+		LightTime:      CreateSetting().LightInput.Text,
+		DarkTime:       CreateSetting().DarkInput.Text,
 		GlobalTheme: config.ThemeConfig{
 			Enable: CreateTheme().ThemeItemList[GlobalTheme].CheckEnable.Checked,
 			Light:  CreateTheme().ThemeItemList[GlobalTheme].LightSelect.Selected,

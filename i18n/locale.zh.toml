@@ -12,6 +12,7 @@ main_display = "显示"
 setting_lightTime = "请输入light主题时间..."
 setting_darkTime = "请输入dark主题时间..."
 setting_enableDarkMode = "是否启用暗黑模式"
+setting_enableAutoTime = "从日落到日出开启"
 
 # theme
 theme_systemTheme = "系统主题"
@@ -41,3 +42,4 @@ logs_setSystemThemeErr = "设置系统主题失败, err:"
 logs_getColorsErr = "列出可用配色方案失败, err:"
 logs_setColorsErr = "设置配色方案失败, err:"
 logs_themeLaunchUpdate = "主题启动修改:"
+logs_timeSystemFormat = "时间系统转换， 12小时制 TO 24小时制 err:"

@@ -21,6 +21,8 @@ type Setting struct {
 	DarkInput *widget.Entry
 	// 是否启用 自动暗黑模式
 	EnableAuto *widget.Check
+	// 是否启用 根据地理位置获取时间
+	EnableAutoTime *widget.Check
 	// 容器
 	Container *fyne.Container
 }
@@ -32,10 +34,13 @@ func CreateSetting() *Setting {
 			LightInput: createInputTime(i18n.GetText("setting_lightTime")),
 			DarkInput:  createInputTime(i18n.GetText("setting_darkTime")),
 			EnableAuto: widget.NewCheck(i18n.GetText("setting_enableDarkMode"), func(value bool) {
-				SettingUI.judgeInputTime(value)
+				SettingUI.judgeInputTime(value, SettingUI.EnableAutoTime.Checked)
+			}),
+			EnableAutoTime: widget.NewCheck(i18n.GetText("setting_enableAutoTime"), func(value bool) {
+				SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked, value)
 			}),
 		}
-		SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked)
+		SettingUI.judgeInputTime(SettingUI.EnableAuto.Checked, SettingUI.EnableAutoTime.Checked)
 		SettingUI.UpdateByConfig(config.GetConfig())
 	}
 
@@ -51,8 +56,8 @@ func createInputTime(label string) *widget.Entry {
 }
 
 // judgeInputTime 判断是否启用输入框
-func (s *Setting) judgeInputTime(b bool) {
-	if b {
+func (s *Setting) judgeInputTime(enable bool, autoTime bool) {
+	if enable && !autoTime {
 		s.LightInput.Enable()
 		s.DarkInput.Enable()
 	} else {
@@ -68,6 +73,7 @@ func (s *Setting) CreateContainer() *fyne.Container {
 			container.NewVBox(
 				container.NewHBox(s.EnableAuto),
 				container.New(layout.NewGridLayout(2), s.LightInput, s.DarkInput),
+				s.EnableAutoTime,
 			),
 		)
 	}
@@ -77,7 +83,8 @@ func (s *Setting) CreateContainer() *fyne.Container {
 // UpdateByConfig 更新设置容器内容，从配置文件中读取配置信息，并更新设置容器内容。
 func (s *Setting) UpdateByConfig(c *config.Config) {
 	CreateSetting().EnableAuto.SetChecked(c.Enable)
-	s.judgeInputTime(c.Enable)
+	CreateSetting().EnableAutoTime.SetChecked(c.EnableAutoTime)
+	s.judgeInputTime(c.Enable, c.EnableAutoTime)
 	CreateSetting().LightInput.SetText(c.LightTime)
 	CreateSetting().DarkInput.SetText(c.DarkTime)
 }

@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"kde_gemini/i18n"
 	"kde_gemini/notice"
 	util "kde_gemini/utils"
 	"log"
@@ -30,6 +31,8 @@ func init() {
 
 // Config 配置信息
 type Config struct {
+	// 是否启用根据地理位置获取时间
+	EnableAutoTime bool `json:"enable_auto_time" mapstructure:"enable_auto_time"`
 	// 是否启用
 	Enable bool `json:"enable" mapstructure:"enable"`
 	// light时间
@@ -46,18 +49,14 @@ type Config struct {
 	Version string `json:"version" mapstructure:"version"`
 }
 
-const VERSION = "0.2.0"
+const VERSION = "0.3.0"
 
-var onceFunc = sync.OnceFunc(func() {
+// GetConfig 获取配置
+var GetConfig = sync.OnceValue(func() *Config {
 	config = &Config{}
 	config.ReadConfiguration()
-})
-
-// GetConfig 获取配置文件对象  单例模式
-func GetConfig() *Config {
-	onceFunc()
 	return config
-}
+})
 
 // ReadConfiguration 读取配置文件
 func (c *Config) ReadConfiguration() {
@@ -70,9 +69,10 @@ func (c *Config) ReadConfiguration() {
 	// viper存在bug，详情：https://github.com/spf13/viper/issues/1514
 	if err := viper.ReadInConfig(); err != nil {
 		createConfigFile(configPath, "kde_gemini.json")
-		log.Println("读取配置文件失败")
+		log.Println(i18n.GetText("logs_readConfigFileErr"))
 		// 读取失败，写入默认配置文件
 		viper.SetDefault("enable", false)
+		viper.SetDefault("enable_auto_time", false)
 		viper.SetDefault("light_time", "07:00")
 		viper.SetDefault("dark_time", "18:00")
 		viper.SetDefault("global_theme", map[string]any{"enable": false, "light": "", "dark": ""})
@@ -140,6 +140,7 @@ func SaveConfiguration(c *Config) error {
 	}
 
 	viper.Set("enable", c.Enable)
+	viper.Set("enable_auto_time", c.EnableAutoTime)
 	viper.Set("light_time", c.LightTime)
 	viper.Set("dark_time", c.DarkTime)
 	viper.Set("global_theme", c.GlobalTheme)
