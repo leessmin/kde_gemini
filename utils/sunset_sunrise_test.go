@@ -11,3 +11,11 @@ func TestTimeSystemFormat(t *testing.T) {
 		t.Log(s)
 	}
 }
+
+func TestGetSunsetSunrise(t *testing.T) {
+	if arr, err := GetSunsetSunrise(); err != nil {
+		t.Log("err", err)
+	} else {
+		t.Log(arr)
+	}
+}

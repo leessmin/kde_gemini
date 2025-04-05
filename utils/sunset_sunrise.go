@@ -8,7 +8,10 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
+
+	"github.com/bradfitz/latlong"
 )
 
 type sunsetSunrise struct {
@@ -43,11 +46,17 @@ func GetSunsetSunrise() ([]string, error) {
 		return nil, err
 	}
 
+	location_currentzone, err := currentZone(position.Lat, position.Lng)
+	if err != nil {
+		log.Println("GetSunsetSunrise err:", err)
+		return nil, err
+	}
+
 	params := url.Values{}
 	params.Add("lat", position.Lat)
 	params.Add("lng", position.Lng)
 	params.Add("date", "today")
-	params.Add("tzid", "Asia/Shanghai")
+	params.Add("tzid", location_currentzone)
 
 	resp, err := http.Get(fmt.Sprintf("%s?%s", sunsetSunriseApiUrl, params.Encode()))
 	if err != nil {
@@ -102,4 +111,18 @@ func timeSystemFormat(inputTime string) (string, error) {
 	outputTime := t.Format(layout24h)
 
 	return outputTime, nil
+}
+
+// 通过经纬度获取当前时区
+func currentZone(lat, lon string) (string, error) {
+	latV, err := strconv.ParseFloat(lat, 64)
+	if err != nil {
+		return "", err
+	}
+	lonV, err := strconv.ParseFloat(lon, 64)
+	if err != nil {
+		return "", err
+	}
+
+	return latlong.LookupZoneName(latV, lonV), nil
 }
