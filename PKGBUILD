@@ -11,7 +11,7 @@ depends=('plasma-desktop>=5.20.0')
 options=('!strip')
 source=("https://github.com/leessmin/kde_gemini/releases/download/$pkgver/$pkgname.tar.xz")
 noextract=('$pkgname.tar.xz')
-sha256sums=('eb899989c9175e6940bf2df01032198e7cc497322a4409f7e39f962fbe454cbe')
+sha256sums=('3c712c6cad444677dadbf89c3c35d1d36cec98a36ea7b22c152ff8a40eb40227')
 
 package() {
 	install -dm755 "${pkgdir}"/usr/bin/

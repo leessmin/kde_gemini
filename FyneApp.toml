@@ -5,7 +5,7 @@ Website = "https://github.com/leessmin/kde_gemini"
   Name = "kde_gemini"
   ID = "com.leessmin.kde_gemini"
   Version = "0.3.0"
-  Build = 6
+  Build = 10
 
 [LinuxAndBSD]
   GenericName = "Application"
