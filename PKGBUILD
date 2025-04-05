@@ -1,7 +1,7 @@
 # Maintainer: leessmin <1442772970@qq.com>
 
 pkgname=kde_gemini
-pkgver=0.3.0
+pkgver=0.5.0
 pkgrel=1
 pkgdesc="自动切换kde桌面主题"
 arch=('x86_64')

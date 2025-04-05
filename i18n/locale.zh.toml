@@ -24,6 +24,8 @@ about_introduce = "没有以下开源项目，本项目根本无法完成。在�
 about_fyne = "fyne-受Material设计启发的Go语言跨平台图形用户界面工具包"
 about_viper = "viper-Go语言配置操作库"
 about_fsnotify = "fsnotify-用于在系统上提供跨平台的文件系统通知"
+about_ipinfo_io = "获取定位由ipinfo.io提供"
+about_sunrise_sunset_org = "获取日出日落由sunrise-sunset.org提供"
 
 # notice
 notice_ConfigurationHasBeenUpdated = "配置已更新"

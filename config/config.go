@@ -49,7 +49,7 @@ type Config struct {
 	Version string `json:"version" mapstructure:"version"`
 }
 
-const VERSION = "0.3.0"
+const VERSION = "0.5.0"
 
 // GetConfig 获取配置
 var GetConfig = sync.OnceValue(func() *Config {

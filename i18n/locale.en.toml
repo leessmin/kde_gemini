@@ -24,6 +24,8 @@ about_introduce = "This project could not have been completed without the follow
 about_fyne = "fyne- Go cross-platform graphical user interface toolkit inspired by Material design"
 about_viper = "viper-Go configuration operation library"
 about_fsnotify = "fsnotify- Used to provide cross-platform file system notification on the system"
+about_ipinfo_io = "The fetch location is provided by ipinfo.io"
+about_sunrise_sunset_org = "Get sunrises and sunsets courtesy of sunrise-sunset.org"
 
 # notice
 notice_ConfigurationHasBeenUpdated = "Configuration has been updated"

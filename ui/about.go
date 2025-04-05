@@ -13,10 +13,12 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var thankList [3]string = [3]string{
+var thankList [5]string = [5]string{
 	i18n.GetText("about_fyne"),
 	i18n.GetText("about_viper"),
 	i18n.GetText("about_fsnotify"),
+	i18n.GetText("about_ipinfo_io"),
+	i18n.GetText("about_sunrise_sunset_org"),
 }
 
 func createAbout() *fyne.Container {
@@ -33,6 +35,8 @@ func createAbout() *fyne.Container {
 		list[0],
 		list[1],
 		list[2],
+		list[3],
+		list[4],
 	)
 }
 
